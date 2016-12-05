@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from satispy import Variable, Cnf
 from satispy.solver import Minisat
 
@@ -52,7 +53,19 @@ def generate(numVariables, k, numClauses):
 # def shuffle by clause or by variable
 
 # TODO
-# def write
+def write(numVariables, formula):
+    # write formula in vector representation for NN input
+
+    # Preallocate representation matrix
+    matrix = np.array([[0]*len(formula) for _ in range(2*numVariables)])
+
+    # Iterate along clauses (columns) marking the member literals
+    for c in range(len(formula)):
+        for l in formula[c]:
+            matrix[l][c] = 1
+
+    # Flatten to 1D representation
+    return np.reshape(matrix, (1, 2*numVariables*len(formula)))
 
 # TODO
 # def read
@@ -61,4 +74,12 @@ def generate(numVariables, k, numClauses):
 # Generate unique formulae (e.g., not same variables)
 
 
-generate(10,3,20)
+
+numVariables = 10
+k = 3
+numClauses = 10
+
+res = generate(numVariables, k, numClauses)
+formula = res[0]
+print(write(numVariables, formula))
+
