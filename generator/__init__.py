@@ -66,6 +66,7 @@ def write(numVariables, formula):
 
     # Flatten to 1D representation
     return np.reshape(matrix, (1, 2*numVariables*len(formula)))
+    
 
 # TODO
 # def read
