@@ -6,4 +6,4 @@ Run the script
 ./bin/install.sh
 ```
 
-See ```generator/__init__.py``` for generating code
+See ```decider/__init__.py``` for generating code
