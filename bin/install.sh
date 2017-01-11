@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+brew install python
 python setup.py develop
 
 cd lib/minisat-os-x
