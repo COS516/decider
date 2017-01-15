@@ -15,7 +15,9 @@ if [[ "OSTYPE" == "linux-gnu" ]]; then
     # TODO: install python packages
 
     # If not...install python locally
+    # http://thelazylog.com/install-python-as-local-user-on-linux/
     # Install python packages
+    # python setup.py develop
 elif [[ "OSTYPE" == "darwin"* ]]; then
 
     brew install python
