@@ -5,14 +5,10 @@ from satispy.solver import Minisat
 def sample(population, k):
     return [random.choice(population) for _ in range(k)]
 
-class RandomFormula():
-    # numVariables: total number of variables
-    # k: number of variables per clause
-    # numClauses: number of clauses
-    def __init__(self, numVariables, k, numClauses):
+class Formula(object):
+    def __init__(self, numVariables, numClauses):
         self.numVariables = numVariables
         self.numLiterals = 2 * numVariables
-        self.k = k
         self.numClauses = numClauses
 
         # satispy Variables
@@ -20,12 +16,54 @@ class RandomFormula():
 
         # Array of arrays (clauses)
         # Literal 2n represents variable n, whereas literal (2n + 1) represents variable -n
-        self.formula = [sample(range(self.numLiterals), self.k) for _ in range(self.numClauses)]
+        self.formula = []
 
+        # Total number of variables actually used in formula
+        self.variablesInFormula = []
+        self.solution = []
+
+    @classmethod
+    def randomSAT(cls, numVariables, k, numClauses):
+        formula = cls(numVariables, numClauses)
+        formula.formula = [sample(range(formula.numLiterals), k) for _ in range(formula.numClauses)]
+
+        formula.updateVariablesInFormula()
+
+        return formula
+
+    @classmethod
+    def from_dimacs(cls, dimacs):
+        formula = None
+
+        for line in dimacs.split('\n'):
+            if line[0] == 'c':
+                continue
+            elif line[0] == 'p':
+                tokens = line.split(' ')
+
+                if not tokens[1] == 'cnf':
+                    raise 'Can only handle CNF'
+
+                numVariables = int(tokens[2])
+                numClauses = int(tokens[3])
+                formula = cls(numVariables, numClauses)
+            else:
+                if formula == None:
+                    raise 'Did not parse formula parameters yet'
+
+                tokens = [int(x) for x in line.split(' ')[:-1]]
+
+                # Convert format from 1 and -1 representing variable 1 and not variable 1
+                # to 0 and 1 (2 * n and 2 * n + 1)
+                modified = [(x - 1) * 2 if x > 0 else -x * 2 - 1 for x in tokens]
+                formula.formula.append(modified)
+
+        formula.updateVariablesInFormula()
+        return formula
+
+    def updateVariablesInFormula(self):
         # Get total number of variables actually used in formula
         self.variablesInFormula = set([literal / 2 for clause in self.formula for literal in clause])
-
-        self.solution = []
 
     def solve(self):
         # Build CNF

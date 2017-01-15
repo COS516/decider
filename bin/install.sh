@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-
+# Assumes you have admin access
 if [[ "OSTYPE" == "linux-gnu" ]]; then
     wget http://minisat.se/downloads/minisat-2.2.0.tar.gz
     tar zxvf minisat*
@@ -11,6 +11,11 @@ if [[ "OSTYPE" == "linux-gnu" ]]; then
     make
     ln -s $pwd/minisat /usr/local/bin/minisat
     cd ../../
+
+    # TODO: install python packages
+
+    # If not...install python locally
+    # Install python packages
 elif [[ "OSTYPE" == "darwin"* ]]; then
 
     brew install python

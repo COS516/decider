@@ -1,5 +1,7 @@
 #!/usr/local/bin/python
 
+# TODO: shouldn't force /usr/local/bin/python
+
 import os
 import time
 import argparse

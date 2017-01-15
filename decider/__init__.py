@@ -1,4 +1,4 @@
-from Formula import RandomFormula
+from Formula import Formula
 from tqdm import tqdm
 
 def generateFormulae(numFormulae, numVariables, k, numClauses):
@@ -11,7 +11,7 @@ def generateFormulae(numFormulae, numVariables, k, numClauses):
 
     while numSolvableFormulae > 0 or numUnsolvableFormulae > 0:
         numTried += 1
-        formula = RandomFormula(numVariables, k, numClauses)
+        formula = Formula.randomSAT(numVariables, k, numClauses)
         solvable = len(formula.solve()) > 0
 
         if solvable and numSolvableFormulae > 0:
