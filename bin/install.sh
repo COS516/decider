@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Assumes you have admin access
-if [[ "OSTYPE" == "linux-gnu" ]]; then
+if [[ $(OSTYPE) == "linux-gnu" ]]; then
     wget http://minisat.se/downloads/minisat-2.2.0.tar.gz
     tar zxvf minisat*
     cd minisat
@@ -16,9 +16,31 @@ if [[ "OSTYPE" == "linux-gnu" ]]; then
 
     # If not...install python locally
     # http://thelazylog.com/install-python-as-local-user-on-linux/
+    mkdir ~/python
+    cd ~/python
+    # If don't have libssl-1.0.0, replace 2.7.13 everywhere with 2.6
+    wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz
+    tar zxfv Python-2.7.13.tgz
+    find ~/python -type d | xargs chmod 0755
+    cd Python-2.7.13
+
+    ./configure --prefix=$HOME/python
+    make && make install
+
+    echo "export PATH=$HOME/python/Python-2.7.13/:$PATH" >> ~/.bashrc_profile
+    echo "export PYTHONPATH=$HOME/python/Python-2.7.13" >> ~/.bashrc_profile
+
+    source ~/.bashrc_profile
+
+    wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py -O - | python - --user
+
+    echo "export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc_profile
+
+    source ~/.bashrc_profile
+
     # Install python packages
-    # python setup.py develop
-elif [[ "OSTYPE" == "darwin"* ]]; then
+    python setup.py develop
+elif [[ $(OSTYPE) == "darwin"* ]]; then
 
     brew install python
     python setup.py develop
