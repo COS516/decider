@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Assumes you have admin access
-if [[ $(OSTYPE) == "linux-gnu" ]]; then
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
     wget http://minisat.se/downloads/minisat-2.2.0.tar.gz
     tar zxvf minisat*
     cd minisat
@@ -40,7 +40,7 @@ if [[ $(OSTYPE) == "linux-gnu" ]]; then
 
     # Install python packages
     python setup.py develop
-elif [[ $(OSTYPE) == "darwin"* ]]; then
+elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     brew install python
     python setup.py develop
