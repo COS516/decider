@@ -9,7 +9,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     cd core
     # sudo apt-get libghc-zlib-dev
     make
-    ln -s $pwd/minisat /usr/local/bin/minisat
+    echo "export PATH=$(pwd)/:$PATH" >> ~/.bashrc_profile
     cd ../../
 
     # TODO: install python packages
